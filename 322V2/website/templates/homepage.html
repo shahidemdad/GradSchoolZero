@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block title %}GRADSCHOOLZERO{% endblock %} {% block content
+%}
+<h1 align="center">GRADSCHOOLZERO</h1>
+    <br>
+    <h3 align="center">Top Courses</h3>
+      <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Course</th>
+                <th scope="col">Name</th>
+                <th scope="col">Rating</th>
+            </tr>
+        </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+                    <tr>
+                        <td>CS322</td>
+                        <td>Meet the specifications</td>
+                        <td>1.0</td>
+                    </tr>
+                    <tr>
+                        <td>ASTRO10100</td>
+                        <td>Thermodynamics of Astrology</td>
+                        <td>10.0</td>
+                    </tr>
+            </tbody>
+        </table>
+    <br>
+    <h3 align="center">Top Students</h3>
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Student Name</th>
+                <th scope="col">GPA</th>
+            </tr>
+        </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+                    <tr>
+                        <td>Carlos</td>
+                        <td>4.00</td>
+                    </tr>
+                    <tr>
+                        <td>Son Goku</td>
+                        <td>3.99</td>
+                    </tr>
+            </tbody>
+        </table>
+        <h3 align="center">About Us</h3>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                    <!-- Your Columns HERE -->
+                    <th scope="col">Our Mission</th>
+                </tr>
+            </thead>
+                <tbody>
+                    <!-- Your rows inside the table HERE: -->
+                        <tr>
+                            <td>GRADSCHOOLZERO stands at the intersection of its historical past and promise for a vibrant future.
+                                Building on its strong foundation of unleashing potential, a City College education integrates
+                                knowledge with experience to nurture scholars, professionals, and leaders who are ready to meet the challenges
+                                of our contemporary society. GRADSCHOOLZERO will attract students who have a tenacious desire to learn, lead,
+                                and contribute to the greater good of society on their path to a successful future.
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+
+{% endblock %}

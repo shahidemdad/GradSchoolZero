@@ -1,0 +1,11 @@
+usertype: Student
+email: Student@gmail.com
+password: 1234567
+
+usertype: Instructor
+email: Instructor@gmail.com
+password: 1234567
+
+usertype: Registrar
+email: Registrar@gmail.com
+password: 1234567
