@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
+from sqlalchemy import desc
+
 from .models import User
 from . import db
 import json
@@ -15,5 +17,8 @@ def homepage():
         ("CSC 10300", "Introduction to Computing", "2.4"),
     )
 
-    student = User.query.order_by(User.gpa).all()
+
+    user = User.query.order_by( desc(User.gpa)).first()
+    max_gpa = user.gpa
+    student = User.query.filter(User.gpa <= max_gpa).order_by( desc(User.gpa)).limit(5).all()
     return render_template("homepage.html", user=current_user,  table_data=data, data=student)
