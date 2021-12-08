@@ -287,7 +287,10 @@ def course_management():
 
 @auth.route('/student-view', methods=['GET', 'POST'])
 def student_view():
-    return render_template("student-view.html", user=current_user)
+    user = User.query.order_by(desc(User.gpa)).first()
+    max_gpa = user.gpa
+    student = User.query.filter(User.gpa <= max_gpa).order_by(desc(User.gpa)).limit(5).all()
+    return render_template("student-view.html", user=current_user, data=student)
 
 @auth.route('/applications', methods=['GET', 'POST'])
 def applications():
@@ -431,7 +434,7 @@ def instructor_management():
         elif request.form['submit_button'] == 'my-courses':
             return redirect(url_for('auth.my_courses'))
         elif request.form['submit_button'] == 'student-records':
-            return redirect(url_for('auth.student_records'))
+            return redirect(url_for('auth.student_view'))
         elif request.form['submit_button'] == 'instructor-student-complaint':
             return redirect(url_for('auth.instructor_student_complaint'))
         elif request.form['submit_button'] == 'instructor-warnings':
