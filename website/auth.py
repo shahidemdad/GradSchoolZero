@@ -152,22 +152,19 @@ def sign_up():
 def make_registrar():
     user = User.query.filter_by(email="r@gmail.com").first()
     if user:
-        flash("Already created it", category="success")
-    else: 
-        flash("Creating ...", category="warning")
+        pass
+    else:
         new_user = User(email = "r@gmail.com", first_name = "RegistrarT", password = generate_password_hash("1", method='sha256'), usertype = "Registrar")
         db.session.add(new_user)
         db.session.commit()
-        flash("Created!", category="success")
     return render_template("make-user.html", user = current_user)
 
 @auth.route('/student-make', methods=['GET', 'POST'])
 def make_student():
     user = User.query.filter_by(email="s@gmail.com").first()
     if user:
-        flash("Already created it", category="success")
+        pass
     else:
-        flash("Creating ...", category="warning")
         new_user = User(email = "s@gmail.com", first_name = "Student", password = generate_password_hash("1", method='sha256'), usertype = "Student")
         db.session.add(new_user)
         db.session.commit()
@@ -188,7 +185,6 @@ def make_student():
         db.session.add(new_user5)
         db.session.commit()
 
-        flash("Created!", category="success")
     return render_template("make-user.html", user = current_user)
 
 
@@ -196,13 +192,11 @@ def make_student():
 def make_instructor():
     user = User.query.filter_by(email="i@gmail.com").first()
     if user:
-        flash("Already created it", category="success")
+        pass
     else:
-        flash("Creating ...", category="warning")
         new_user = User(email = "i@gmail.com", first_name = "Instructor", password = generate_password_hash("1", method='sha256'), usertype = "Instructor")
         db.session.add(new_user)
         db.session.commit()
-        flash("Created!", category="success")
     return render_template("make-user.html", user = current_user)
 
 
