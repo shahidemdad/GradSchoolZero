@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Student Records{% endblock %} {% block content
+    %}
+    <h3 align="center">Student Records</h3>
+    <br>
+
+    <form method="POST">
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Course ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Semester</th>
+                <th scope="col">Grade</th>
+            </tr>
+        </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+                    <tr>
+                        <td>CSC59866</td>
+                        <td>Senior Design</td>
+                        <td>Fall 2020</td>
+                        <td>A+</td>
+                    </tr>
+            </tbody>
+        </table>
+    <br>
+</form>
+    {% endblock %}

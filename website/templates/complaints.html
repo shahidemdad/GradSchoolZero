@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block title %}Complaints{% endblock %} {% block content
+    %}
+    <h3 align="center">Complaints</h3>
+    <br>
+
+    <form method="POST">
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Type</th>                
+                <th scope="col">Complainer Email</th>
+                <th scope="col">Complainee Email</th>
+                <th scope="col">Complaint</th>
+                <th scope="col">Warn</th>
+            </tr>
+        </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+                {% for comps in comp %}
+                    <tr>
+                        <td>{{ comps.id }}</td>
+                        <td>{{ comps.fname }}</td>
+                        <td>{{ comps.ctype }}</td>
+                        <td>{{ comps.complainer_email }}</td>
+                        <td>{{ comps.complainee_email }}</td>
+                        <td>{{ comps.complaint }}</td>
+                        <td>
+                            <button class="btn btn-outline btn-warning" name="complainer_button" value="{{ comps.id }}">Complainer</button>
+                            &nbsp;
+                            <button class="btn btn-outline btn-warning" name="complainee_button" value="{{ comps.id }}">Complainee</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    <br>
+</form>
+    {% endblock %}

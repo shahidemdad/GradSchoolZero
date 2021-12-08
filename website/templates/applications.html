@@ -1,0 +1,33 @@
+{% extends "base.html" %} {% block title %}Courses{% endblock %} {% block content
+    %}
+    <h3 align="center">Applications</h3>
+    <br>
+    <form method="POST">
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Item ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">GPA</th>
+                <th scope="col">Subject</th>
+            </tr>
+        </thead>
+        <tbody>
+                <tr>
+                    {% for apps in app %}
+                    <td>{{ apps.id }}</td>
+                    <td>{{ apps.name }}</td>
+                    <td>{{ apps.gpa_student }}</td>
+                    <td>{{ apps.subject_instructor }}</td>
+                    <input id="id" name="id"
+                       type="hidden" value="{{ app.id }}">
+                    <td>
+                        <button class="btn btn-outline btn-warning" name="submit_button" value = "{{ apps.id }}" >Decline</button>
+                        <button class="btn btn-outline btn-success" name="submit_button1" value = "{{ apps.id }}">Accept</button>
+                    </td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+</form>
+    {% endblock %}

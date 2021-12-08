@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block title %}Search Classes{% endblock %} {% block content
+%}
+<br>
+<h3 align="center">{{ user.usertype }} Search Classes</h3>
+<br>
+
+<center>
+<form class="form-inline my-2 my-lg-0" method="GET">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" name="searchTextField">
+    <button class="btn btn-outline btn-success">Submit</button>
+</form>
+</center>
+<br>
+<table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                {% for header in table_headings %}
+                <th> {{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for courses in data %}
+                <td>{{courses.course_id }}</td>
+                <td>{{courses.name }}</td>
+                <td>{{courses.instructor }}</td>
+                <td>{{courses.capacity }}</td>
+                <td>{{courses.semester}}</td>
+                <td><button class="btn btn-outline btn-success">Enroll</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+</table>
+{% endblock %}

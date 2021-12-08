@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}Search Classes{% endblock %} {% block content
+%}
+<br>
+<h3 align="center">{{ user.usertype }} Drop Classes</h3>
+
+<br>
+<p><center>Somehow need to populate this table (not manually)</center></p>
+<br>
+
+<table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Course ID</th>
+                <th scope="col">Course Name</th>
+                <th scope="col">Instructor</th>
+                <th scope="col">Number of Students</th>
+                <th scope="col">Semester</th>
+            </tr>
+        </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+
+                    <tr>
+                        <td>CSC 10300</td>
+                        <td>Introduction to Computing</td>
+                        <td>William E. Skeith</td>
+                        <td>90</td>
+                        <td>Fall 2021</td>
+                        <td>
+                            <button class="btn btn-outline btn-success">Drop</button>
+                        </td>
+                    </tr>
+            <tr>
+                        <td>CSC 10300</td>
+                        <td>Introduction to Computing</td>
+                        <td>Akira Kawaguchi</td>
+                        <td>90</td>
+                        <td>Fall 2021</td>
+                        <td>
+                            <button class="btn btn-outline btn-success">Drop</button>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Instructor Management{% endblock %} {% block content
+%}
+<h3 align="center">{{ user.usertype }} Management</h3>
+    <br>
+
+<form method="POST">
+    <button class="btn btn-outline btn-primary" style="height:50px;width:99%"
+            name="submit_button" value="grade-students">Grade Students</button>
+    <br>
+    <br>
+    <button class="btn btn-outline btn-secondary" style="height:50px;width:99%"
+            name="submit_button" value="my-courses">My Courses</button>
+
+    <br>
+    <br>
+    <button class="btn btn-outline btn-info" style="height:50px;width:99%"
+            name="submit_button" value="student-records">Student Records</button>
+
+    <br>
+    <br>
+    <button class="btn btn-outline btn-light" style="height:50px;width:99%"
+            name="submit_button" value="instructor-student-complaint">File Student Complaint</button>
+
+    <br>
+    <br>
+    <button class="btn btn-outline btn-warning" style="height:50px;width:99%"
+            name="submit_button" value="instructor-warnings">My Warnings</button>
+</form>
+
+
+{% endblock %}

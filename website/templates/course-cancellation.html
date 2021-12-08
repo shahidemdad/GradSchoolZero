@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}Course Cancellation{% endblock %} {% block content
+    %}
+    <h3 align="center">Course Cancellation</h3>
+    <br>
+
+    <form method="POST">
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Course ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Section?</th>
+            </tr>
+        </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+                    <tr>
+                        <td>CS 322</td>
+                        <td>Software Engineering</td>
+                        <td>M</td>
+                        <td>
+                            <button class="btn btn-outline btn-danger">Cancel</button>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    <br>
+</form>
+    {% endblock %}

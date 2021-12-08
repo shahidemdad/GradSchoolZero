@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %}Student Suspension{% endblock %} {% block content
+    %}
+    <h3 align="center">Student Suspension</h3>
+    <br>
+
+    <form method="POST">
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+                    <tr>
+                        <td>1</td>
+                        <td>Steven Granaturov</td>
+                        <td>
+                            <button class="btn btn-outline btn-danger">Suspend</button>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+    <br>
+</form>
+    {% endblock %}

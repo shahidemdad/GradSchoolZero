@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block title %}My Courses{% endblock %} {% block content
+    %}
+    <h3 align="center">My Courses</h3>
+    <br>
+
+    <form method="POST">
+    <table class="table table-hover table-dark">
+        <thead>
+            <tr>
+                <!-- Your Columns HERE -->
+                <th scope="col">Course ID</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+            <tbody>
+                <!-- Your rows inside the table HERE: -->
+                    <tr>
+                        <td>CS 32200</td>
+                        <td>Software Engineering</td>
+                    </tr>
+            </tbody>
+        </table>
+    <br>
+</form>
+    {% endblock %}

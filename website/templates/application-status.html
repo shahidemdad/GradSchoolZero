@@ -1,0 +1,19 @@
+{% extends "base.html" %} {% block title %}Application Status{% endblock %} {% block
+    content %}
+    <form method="POST">
+    <h3 align="center">Application Status</h3>
+    <br>
+    <div class="form-group">
+        <label for="fullname">Full Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="fullname"
+          name="fullname"
+          placeholder="Enter Full Name"
+        />
+      </div>
+      <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+    {% endblock %}
