@@ -22,11 +22,11 @@ def login():
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 if user.usertype == "Student":
-                    return render_template("student-management.html", user=current_user)
+                    return redirect(url_for("auth.student_management"))
                 elif user.usertype == "Instructor":
-                    return render_template("instructor-management.html", user=current_user)
+                    return redirect(url_for("auth.instructor_management"))
                 elif user.usertype == "Registrar":
-                    return render_template("registrar-management.html", user=current_user)
+                    return redirect(url_for("auth.registrar_management"))
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
