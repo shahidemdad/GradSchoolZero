@@ -22,7 +22,7 @@ def homepage():
     )
 
 
-    user = User.query.order_by( desc(User.gpa)).first()
+    user = User.query.order_by(desc(User.gpa)).first()
     max_gpa = user.gpa
     student = User.query.filter(User.gpa <= max_gpa).order_by( desc(User.gpa)).limit(5).all()
     return render_template("homepage.html", user=current_user,  table_data=data, data=student)

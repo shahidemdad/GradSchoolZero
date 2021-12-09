@@ -10,6 +10,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(400))
     usertype = db.Column(db.String(400))
     gpa = db.Column(db.Integer)
+    department = db.Column(db.String(400))
     courses = db.relationship('Courses')
 
     def getFName(self):
@@ -37,7 +38,7 @@ class Applications(db.Model):
     __tablename__ = 'apps'
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.Integer)
-    subject_instructor = db.Column(db.String(400))
+    department = db.Column(db.String(400))
     gpa_student = db.Column(db.Float)
     name = db.Column(db.String(400))
     type = db.Column(db.String(400))

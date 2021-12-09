@@ -74,7 +74,7 @@ def apply_instructor():
     if request.method == 'POST':
         subject = request.form.get('subject')
         name = request.form.get('fullname')
-        new_application = Applications(status = 2, subject_instructor = subject, name = name, type = "Instructor")
+        new_application = Applications(status = 2, department = subject, name = name, type = "Instructor")
         db.session.add(new_application) 
         db.session.commit()
         flash("Application submitted", category="success")
@@ -114,6 +114,7 @@ def sign_up():
         password2 = request.form.get('password2')
         usertype = session.get('var', None)    # this gets 'var' from application() and uses it to get the user type
         gpa = session.get('gpa', None)
+        department = session.get('department', None)
 
         user = User.query.filter_by(email=email).first()
         # checks the requirements that the inputs are
@@ -127,7 +128,13 @@ def sign_up():
             flash('Passwords don\'t match.', category='error')
         # elif len(password1) < 7:
         #     flash('Password must be at least 7 characters.', category='error')
-        new_user = User(email = email, first_name = first_name, password = generate_password_hash(password1, method='sha256'), usertype = usertype, gpa = gpa)
+        if usertype == 'Student':
+            new_user = User(email=email, first_name=first_name,
+                            password=generate_password_hash(password1, method='sha256'), usertype=usertype, gpa=gpa)
+        elif usertype == 'Instructor':
+            new_user = User(email=email, first_name=first_name,
+                            password=generate_password_hash(password1, method='sha256'), usertype=usertype,
+                            department=department)
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user, remember=True)
@@ -165,45 +172,25 @@ def make_student():
         new_user = User(email = "s@gmail.com", first_name = "Student", password = generate_password_hash("1", method='sha256'), usertype = "Student")
         db.session.add(new_user)
         db.session.commit()
-        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="CSC 39100",
-                                    instructor="Deez Nuts", semester="Fall 2021")
-        db.session.add(new_usercourse)
-        db.session.commit()
 
         new_user2 = User(email="c@gmail.com", first_name="Carlos Flores",
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa = '3.85')
         db.session.add(new_user2)
-        db.session.commit()
-        new_usercourse = UserCourse(id=new_user2.get_id(), name=new_user.getFName(), course_id="",
-                                    instructor="", semester="")
-        db.session.add(new_usercourse)
         db.session.commit()
 
         new_user3 = User(email="sg@gmail.com", first_name="Steven Granaturov",
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.80')
         db.session.add(new_user3)
         db.session.commit()
-        new_usercourse = UserCourse(id=new_user3.get_id(), name=new_user.getFName(), course_id="",
-                                    instructor="", semester="")
-        db.session.add(new_usercourse)
-        db.session.commit()
 
         new_user4 = User(email="w@gmail.com", first_name="Willie Shi",
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.90')
         db.session.add(new_user4)
         db.session.commit()
-        new_usercourse = UserCourse(id=new_user4.get_id(), name=new_user.getFName(), course_id="",
-                                    instructor="", semester="")
-        db.session.add(new_usercourse)
-        db.session.commit()
 
         new_user5 = User(email="a@gmail.com", first_name="Atiya Mirza",
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.75')
         db.session.add(new_user5)
-        db.session.commit()
-        new_usercourse = UserCourse(id=new_user5.get_id(), name=new_user.getFName(), course_id="",
-                                    instructor="", semester="")
-        db.session.add(new_usercourse)
         db.session.commit()
 
         if request.method == "POST":
@@ -369,8 +356,11 @@ def applications():
         elif request.form.get('submit_button1'):
             id = request.form.get('submit_button1')
             remove = Applications.query.get(id)
-            re = Applications.query.filter_by(id = id).first()
-            session["gpa"] = re.gpa_student
+            re = Applications.query.filter_by(id=id).first()
+            if re.type == "Instructor":
+                session["department"] = re.department
+            else:
+                session["gpa"] = re.gpa_student
             remove.status = 0
             db.session.commit()
             flash("Accepted", category="success")
