@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session 
-from .models import User, Courses, Applications, Complaints, Warnings 
+from .models import User, Courses, Applications, Complaints, Warnings, UserCourse
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -145,9 +145,6 @@ def sign_up():
 # REMOVE LATER
 
 
-
-
-
 @auth.route('/registrar-make', methods=['GET', 'POST'])
 def make_registrar():
     user = User.query.filter_by(email="r@gmail.com").first()
@@ -168,25 +165,61 @@ def make_student():
         new_user = User(email = "s@gmail.com", first_name = "Student", password = generate_password_hash("1", method='sha256'), usertype = "Student")
         db.session.add(new_user)
         db.session.commit()
+        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="CSC 39100",
+                                    instructor="Deez Nuts", semester="Fall 2021")
+        db.session.add(new_usercourse)
+        db.session.commit()
+
         new_user2 = User(email="c@gmail.com", first_name="Carlos Flores",
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa = '3.85')
         db.session.add(new_user2)
         db.session.commit()
+        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="",
+                                    instructor="", semester="")
+        db.session.add(new_usercourse)
+        db.session.commit()
+
         new_user3 = User(email="sg@gmail.com", first_name="Steven Granaturov",
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.80')
         db.session.add(new_user3)
         db.session.commit()
+        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="",
+                                    instructor="", semester="")
+        db.session.add(new_usercourse)
+        db.session.commit()
+
         new_user4 = User(email="w@gmail.com", first_name="Willie Shi",
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.90')
         db.session.add(new_user4)
         db.session.commit()
+        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="",
+                                    instructor="", semester="")
+        db.session.add(new_usercourse)
+        db.session.commit()
+
         new_user5 = User(email="a@gmail.com", first_name="Atiya Mirza",
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.75')
         db.session.add(new_user5)
         db.session.commit()
+        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="",
+                                    instructor="", semester="")
+        db.session.add(new_usercourse)
+        db.session.commit()
 
-    return render_template("make-user.html", user = current_user)
-
+        if request.method == "POST":
+            name = request.form.get('name')
+            course_id = request.form.get('course_id')
+            instructor = request.form.get('instructor')
+            semester = request.form.get('semester')
+            capacity = request.form.get('capacity')
+            new_course = Courses(course_id=course_id, name=name, instructor=instructor, semester=semester,
+                                 capacity=capacity)
+            db.session.add(new_course)
+            db.session.commit()
+            return render_template("courses-make.html", user=current_user)
+        else:
+            return render_template("courses-make.html", user=current_user)
+    return render_template("make-user.html", user=current_user)
 
 @auth.route('/instructor-make', methods=['GET', 'POST'])
 def make_instructor():
@@ -267,14 +300,34 @@ def make_courses():
     #return render_template("courses-make.html", user = current_user)
 
 
-# Some reason this doesnt work --
 @auth.route('/search-classes', methods=['GET', 'POST'])
 def search_classes():
     headings = ("Course ID", "Course Name", "Instructor", "Number of Students", "Semester")
     searchTextField = request.args.get('searchTextField')
-    # TODO Get search to work
-    coursesData = Courses.query.order_by(Courses.course_id).all()
-    return render_template("search-classes.html", user=current_user, table_headings=headings, data=coursesData)
+    if searchTextField:
+        coursesData = Courses.query.filter_by(course_id=searchTextField).order_by(Courses.course_id).all()
+    else:
+        coursesData = Courses.query.order_by(Courses.course_id).all()
+    if request.method == "POST":
+        if request.form.get("enrollbutton"):
+            id = request.form.get("enrollbutton")
+            user_C = Courses.query.get(id) # This is the course we want to add COURSE OBJECT
+            courseID = user_C.course_id
+            courseName = user_C.name
+            courseInstructor = user_C.instructor
+            courseSemester = user_C.semester
+            studentID = current_user.get_id()
+            studentName = current_user.getFName()
+            new_usercourse = UserCourse(id=studentID, name=studentName, course_id=courseID,
+                                        instructor=courseInstructor, semester=courseSemester)
+            db.session.add(new_usercourse)
+            db.session.commit()
+            return redirect(url_for(auth.search_classes))
+
+    else:
+        return render_template("search-classes.html", user=current_user, table_headings=headings, data=coursesData)
+
+    #return render_template("search-classes.html", user=current_user, table_headings=headings, data=coursesData)
 
 @auth.route('/drop-class', methods=['GET', 'POST'])
 def drop_classes():
@@ -394,7 +447,9 @@ def class_overview():
     if request.method == 'POST':
         pass
     else:
-        return render_template("class-overview.html", user=current_user)
+        userCourses = UserCourse.query.order_by(UserCourse.course_id).all()
+        headings = ("Course ID", "Course Name", "Instructor", "Semester")
+        return render_template("class-overview.html", user=current_user, table_headings=headings, data=userCourses)
     
 # student complaints about instructor to registrar
 @auth.route('/student-instructor-complaint', methods=['GET', 'POST'])

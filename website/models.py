@@ -2,6 +2,7 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(400), unique=True)
@@ -11,29 +12,38 @@ class User(db.Model, UserMixin):
     gpa = db.Column(db.Integer)
     courses = db.relationship('Courses')
 
+    def getFName(self):
+        return self.first_name
+
+    def get_id(self):
+        return self.id
+
+
 class Courses(db.Model):
     __tablename__ = 'courses'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(400))
-    course_id = db.Column(db.String(400)) 
-    instructor = db.Column(db.String(400)) 
+    course_id = db.Column(db.String(400))
+    instructor = db.Column(db.String(400))
     semester = db.Column(db.String(400))
     capacity = db.Column(db.Integer)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-# added Applications, will have a relationship with User and 
+
+# added Applications, will have a relationship with User and
 #   students enter their name, and GPA -> Float 
 #   Instructor enters their subject of interest and their name 
 class Applications(db.Model):
     __tablename__ = 'apps'
     id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.Integer) 
+    status = db.Column(db.Integer)
     subject_instructor = db.Column(db.String(400))
     gpa_student = db.Column(db.Float)
     name = db.Column(db.String(400))
     type = db.Column(db.String(400))
 
-# complaints to registrar 
+
+# complaints to registrar
 class Complaints(db.Model):
     __tablename__ = 'complaints'
     id = db.Column(db.Integer, primary_key=True)
@@ -42,13 +52,24 @@ class Complaints(db.Model):
     complainer_email = db.Column(db.String(400))
     complainee_email = db.Column(db.String(400))
     complaint = db.Column(db.String(400))
+
     def __repr__(self):
         return self.complainer_email + " " + self.complainee_email
 
-# warnings to instructor/student  
+
+# warnings to instructor/student
 class Warnings(db.Model):
     __tablename__ = 'warnings'
     id = db.Column(db.Integer, primary_key=True)
     wtype = db.Column(db.String(400))
     complaint = db.Column(db.String(400))
     email_warned = db.Column(db.String(400))
+
+
+class UserCourse(db.Model):
+    __tablename__ = 'usercourses'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(400))
+    course_id = db.Column(db.String(400))
+    instructor = db.Column(db.String(400))
+    semester = db.Column(db.String(400))

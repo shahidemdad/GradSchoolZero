@@ -7,22 +7,21 @@
     <table class="table table-hover table-dark">
         <thead>
             <tr>
-                <!-- Your Columns HERE -->
-                <th scope="col">Course ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Instructor</th>
-                <th scope="col">Semester</th>
+                {% for header in table_headings %}
+                <th> {{ header }}</th>
+                {% endfor %}
             </tr>
         </thead>
             <tbody>
-                <!-- Your rows inside the table HERE: -->
-                    <tr>
-                        <td>PSYCH10100</td>
-                        <td>Introduction to Psychology</td>
-                        <td>Dr. Phil</td>
-                        <td>Fall 2021</td>
-                    </tr>
-            </tbody>
+            <tr>
+                {% for courses in data %}
+                <td>{{courses.course_id }}</td>
+                <td>{{courses.name }}</td>
+                <td>{{courses.instructor }}</td>
+                <td>{{courses.semester}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
         </table>
     <br>
 </form>
