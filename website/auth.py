@@ -239,9 +239,8 @@ def make_instructor():
 def make_courses():
     course = Courses.query.filter_by(name = "Introduction to Computing").first()
     if course:
-        flash("Already created it", category="success")
+        pass
     else:
-        flash("Creating ...", category="warning")
         new_user = Courses(course_id = "CSC 10300", name = "Introduction to Computing", instructor = "William E. Skeith", capacity= 90, semester="Fall 2021")
         db.session.add(new_user)
         db.session.commit()
@@ -282,8 +281,6 @@ def make_courses():
         db.session.add(new_user)
         db.session.commit()
 
-        flash("Created!", category="success")
-
     if request.method == "POST":
         name = request.form.get('name')
         course_id = request.form.get('course_id')
@@ -297,7 +294,8 @@ def make_courses():
         return render_template("courses-make.html", user=current_user)
     else:
         return render_template("courses-make.html", user=current_user)
-    #return render_template("courses-make.html", user = current_user)
+
+
 
 
 @auth.route('/search-classes', methods=['GET', 'POST'])
