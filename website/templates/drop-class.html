@@ -2,46 +2,27 @@
 %}
 <br>
 <h3 align="center">{{ user.usertype }} Drop Classes</h3>
-
 <br>
-<p><center>Somehow need to populate this table (not manually)</center></p>
-<br>
-
+<form method="POST">
 <table class="table table-hover table-dark">
         <thead>
             <tr>
-                <!-- Your Columns HERE -->
-                <th scope="col">Course ID</th>
-                <th scope="col">Course Name</th>
-                <th scope="col">Instructor</th>
-                <th scope="col">Number of Students</th>
-                <th scope="col">Semester</th>
+                {% for header in table_headings %}
+                <th> {{ header }}</th>
+                {% endfor %}
             </tr>
         </thead>
             <tbody>
-                <!-- Your rows inside the table HERE: -->
-
-                    <tr>
-                        <td>CSC 10300</td>
-                        <td>Introduction to Computing</td>
-                        <td>William E. Skeith</td>
-                        <td>90</td>
-                        <td>Fall 2021</td>
-                        <td>
-                            <button class="btn btn-outline btn-success">Drop</button>
-                        </td>
-                    </tr>
             <tr>
-                        <td>CSC 10300</td>
-                        <td>Introduction to Computing</td>
-                        <td>Akira Kawaguchi</td>
-                        <td>90</td>
-                        <td>Fall 2021</td>
-                        <td>
-                            <button class="btn btn-outline btn-success">Drop</button>
-                        </td>
-                    </tr>
-
-            </tbody>
+                {% for courses in data %}
+                <td>{{courses.course_id }}</td>
+                <td>{{courses.name }}</td>
+                <td>{{courses.instructor }}</td>
+                <td>{{courses.semester}}</td>
+                <td><button class="btn btn-outline btn-danger" name="dropbutton" value="{{ courses.id }}" formmethod="POST" >Drop</button></td>
+            </tr>
+        {% endfor %}
+        </tbody>
         </table>
+</form>
 {% endblock %}

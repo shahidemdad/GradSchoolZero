@@ -296,8 +296,6 @@ def make_courses():
         return render_template("courses-make.html", user=current_user)
 
 
-
-
 @auth.route('/search-classes', methods=['GET', 'POST'])
 def search_classes():
     headings = ("Course ID", "Course Name", "Instructor", "Number of Students", "Semester")
@@ -307,29 +305,39 @@ def search_classes():
     else:
         coursesData = Courses.query.order_by(Courses.course_id).all()
     if request.method == "POST":
-        if request.form.get("enrollbutton"):
-            id = request.form.get("enrollbutton")
-            user_C = Courses.query.get(id) # This is the course we want to add COURSE OBJECT
-            courseID = user_C.course_id
-            courseName = user_C.name
-            courseInstructor = user_C.instructor
-            courseSemester = user_C.semester
-            studentID = current_user.get_id()
-            studentName = current_user.getFName()
-            new_usercourse = UserCourse(id=studentID, name=studentName, course_id=courseID,
-                                        instructor=courseInstructor, semester=courseSemester)
-            db.session.add(new_usercourse)
-            db.session.commit()
-            return redirect(url_for(auth.search_classes))
+        #if request.form.get("enrollbutton"): DONT TOUCH, WORKS WITHOUT THIS STATEMENT
+        id = request.form.get("enrollbutton")
+        print(id)
+        course = Courses.query.get(id) # got the course
+        courseID = course.id
+        courseName = course.name
+        courseInstructor = course.instructor
+        courseSemester = course.semester
+        new_usercourse = UserCourse(name=courseName, course_id=courseID, instructor=courseInstructor, semester=courseSemester)
+        db.session.add(new_usercourse)
+        db.session.commit()
+        return redirect(url_for('auth.search_classes', user=current_user, table_headings=headings, data=coursesData))
 
     else:
         return render_template("search-classes.html", user=current_user, table_headings=headings, data=coursesData)
 
-    #return render_template("search-classes.html", user=current_user, table_headings=headings, data=coursesData)
+    print(request.method)
+    return render_template("search-classes.html", user=current_user, table_headings=headings, data=coursesData)
+
 
 @auth.route('/drop-class', methods=['GET', 'POST'])
 def drop_classes():
-    return render_template("drop-class.html", user=current_user)
+    headings = ("Course ID", "Course Name", "Instructor", "Semester")
+    userCourses = UserCourse.query.order_by(UserCourse.course_id).all()
+    if request.method == "POST":
+        id = request.form.get("dropbutton")
+        course = UserCourse.query.get(id)
+        print(id)
+        db.session.delete(course)
+        db.session.commit()
+        userCourses = UserCourse.query.order_by(UserCourse.course_id).all()
+    return render_template("drop-class.html", user=current_user, table_headings=headings, data=userCourses)
+
 
 @auth.route('/course-management', methods=['GET', 'POST'])
 def course_management():
@@ -342,6 +350,7 @@ def student_view():
     max_gpa = user.gpa
     student = User.query.filter(User.gpa <= max_gpa).order_by(desc(User.gpa)).limit(5).all()
     return render_template("student-view.html", user=current_user, data=student)
+
 
 @auth.route('/applications', methods=['GET', 'POST'])
 def applications():
@@ -374,6 +383,7 @@ def applications():
 @auth.route('/warnings', methods=['GET', 'POST'])
 def warnings():
     return render_template("warnings.html", user=current_user)
+
 
 # registrar handles std/instr and instr/std complaints
 @auth.route('/complaints', methods=['GET', 'POST'])
@@ -416,6 +426,7 @@ def complaints():
             return render_template("complaints.html", comp = comps, user=current_user)
     else:       
         return render_template("complaints.html", comp = comps, user=current_user)
+
 
 # for the management pages
 @auth.route('/student-management', methods=['GET', 'POST'])

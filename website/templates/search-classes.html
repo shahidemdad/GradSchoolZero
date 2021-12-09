@@ -12,7 +12,7 @@
 </center>
 <br>
 <form method="POST">
-<table class="table table-hover table-dark">
+<table class="table table-hover table-dark" id = "coursetable">
         <thead>
             <tr>
                 {% for header in table_headings %}
@@ -28,7 +28,7 @@
                 <td>{{courses.instructor }}</td>
                 <td>{{courses.capacity }}</td>
                 <td>{{courses.semester}}</td>
-                <td><button class="btn btn-outline btn-success" name="enrollbutton" value="courses.course_id">Enroll</button></td>
+                <td><button class="btn btn-outline btn-success" name="enrollbutton" value="{{ courses.id }}" formmethod="POST" >Enroll</button></td>
             </tr>
         {% endfor %}
         </tbody>
