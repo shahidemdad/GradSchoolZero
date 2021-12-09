@@ -14,13 +14,15 @@
         </thead>
             <tbody>
                 <!-- Your rows inside the table HERE: -->
+                {% for students in student%}
                     <tr>
-                        <td>1</td>
-                        <td>Naruto Uzumaki</td>
+                        <td>{{ students.id }}</td>
+                        <td>{{ students.first_name }}</td>
                         <td>
-                            <button class="btn btn-outline btn-danger">Expel</button>
+                            <button class="btn btn-outline btn-danger" name="expel_button" value="{{ students.id}}">Expel</button>
                         </td>
                     </tr>
+                    {% endfor %}
             </tbody>
         </table>
     <br>

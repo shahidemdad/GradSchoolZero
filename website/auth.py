@@ -605,10 +605,20 @@ def instructor_suspension():
 
 @auth.route('/student-termination', methods=['GET', 'POST'])
 def student_termination():
+    lowgpa = 3
+    students = User.query.filter(User.gpa < lowgpa).all()
+    print(students)
     if request.method == 'POST':
-        pass
+        _id = request.form.get('expel_button')
+        stds = User.query.filter_by(id=_id).all()
+        stud = stds[0]
+        db.session.delete(stud)
+        db.session.commit()
+        flash("Student expelled", category="success")
+        students = User.query.filter(User.gpa < lowgpa).all()
+        return render_template("student-termination.html", student = students, user=current_user)
     else:
-        return render_template("student-termination.html", user=current_user)
+        return render_template("student-termination.html", student = students, user=current_user)
 
 
 @auth.route('/class-ratings', methods=['GET', 'POST'])
