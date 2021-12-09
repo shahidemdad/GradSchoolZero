@@ -174,7 +174,7 @@ def make_student():
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa = '3.85')
         db.session.add(new_user2)
         db.session.commit()
-        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="",
+        new_usercourse = UserCourse(id=new_user2.get_id(), name=new_user.getFName(), course_id="",
                                     instructor="", semester="")
         db.session.add(new_usercourse)
         db.session.commit()
@@ -183,7 +183,7 @@ def make_student():
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.80')
         db.session.add(new_user3)
         db.session.commit()
-        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="",
+        new_usercourse = UserCourse(id=new_user3.get_id(), name=new_user.getFName(), course_id="",
                                     instructor="", semester="")
         db.session.add(new_usercourse)
         db.session.commit()
@@ -192,7 +192,7 @@ def make_student():
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.90')
         db.session.add(new_user4)
         db.session.commit()
-        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="",
+        new_usercourse = UserCourse(id=new_user4.get_id(), name=new_user.getFName(), course_id="",
                                     instructor="", semester="")
         db.session.add(new_usercourse)
         db.session.commit()
@@ -201,7 +201,7 @@ def make_student():
                         password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.75')
         db.session.add(new_user5)
         db.session.commit()
-        new_usercourse = UserCourse(id=new_user.get_id(), name=new_user.getFName(), course_id="",
+        new_usercourse = UserCourse(id=new_user5.get_id(), name=new_user.getFName(), course_id="",
                                     instructor="", semester="")
         db.session.add(new_usercourse)
         db.session.commit()
