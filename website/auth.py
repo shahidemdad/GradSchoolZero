@@ -55,6 +55,7 @@ def apply():
     else:
         return render_template("apply.html", user=current_user)
 
+
 @auth.route('/apply-student', methods = ['GET', 'POST'])
 def apply_student(): 
     if request.method == 'POST':
@@ -149,9 +150,6 @@ def sign_up():
     return render_template("sign_up.html", user=current_user)
 
 
-# REMOVE LATER
-
-
 @auth.route('/registrar-make', methods=['GET', 'POST'])
 def make_registrar():
     user = User.query.filter_by(email="r@gmail.com").first()
@@ -162,6 +160,7 @@ def make_registrar():
         db.session.add(new_user)
         db.session.commit()
     return render_template("make-user.html", user = current_user)
+
 
 @auth.route('/student-make', methods=['GET', 'POST'])
 def make_student():
@@ -208,6 +207,7 @@ def make_student():
             return render_template("courses-make.html", user=current_user)
     return render_template("make-user.html", user=current_user)
 
+
 @auth.route('/instructor-make', methods=['GET', 'POST'])
 def make_instructor():
     user = User.query.filter_by(email="i@gmail.com").first()
@@ -218,8 +218,6 @@ def make_instructor():
         db.session.add(new_user)
         db.session.commit()
     return render_template("make-user.html", user = current_user)
-
-
 
 
 @auth.route('/courses-make', methods=['GET', 'POST'])
@@ -310,6 +308,22 @@ def search_classes():
 
     print(request.method)
     return render_template("search-classes.html", user=current_user, table_headings=headings, data=coursesData)
+
+
+@auth.route('/cancel-course', methods=['GET', 'POST'])
+def cancel_course():
+    headings = ("Course ID", "Course Name", "Instructor", "Number of Students", "Semester")
+    coursesData = Courses.query.order_by(Courses.course_id).all()
+    if request.method == "POST":
+        id = request.form.get("cancelbutton")
+        course = Courses.query.get(id)
+        print(id)
+        db.session.delete(course)
+        db.session.commit()
+        coursesData = Courses.query.order_by(Courses.course_id).all()
+        return render_template("course-cancellation.html", user=current_user, table_headings=headings, data=coursesData)
+    else:
+        return render_template("course-cancellation.html", user=current_user, table_headings=headings, data=coursesData)
 
 
 @auth.route('/drop-class', methods=['GET', 'POST'])
@@ -571,14 +585,6 @@ def evaluate_instructor():
         pass
     else:
         return render_template("evaluate-instructor.html", user=current_user)
-
-
-@auth.route('/cancel-course', methods=['GET', 'POST'])
-def cancel_course():
-    if request.method == 'POST':
-        pass
-    else:
-        return render_template("course-cancellation.html", user=current_user)
 
 
 @auth.route('/student-suspension', methods=['GET', 'POST'])
