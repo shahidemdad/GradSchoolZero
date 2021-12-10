@@ -658,7 +658,7 @@ def instructor_suspension():
 
 @auth.route('/student-termination', methods=['GET', 'POST'])
 def student_termination():
-    lowgpa = 3
+    lowgpa = 2
     students = User.query.filter(User.gpa < lowgpa).all()
     print(students)
     if request.method == 'POST':
