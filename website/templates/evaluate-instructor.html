@@ -7,24 +7,23 @@
     <table class="table table-hover table-dark">
         <thead>
             <tr>
-                <!-- Your Columns HERE -->
-                <th scope="col">ID</th>
-                <th scope="col">Email</th>
-                <th scope="col">Name</th>
-                <th scope="col">Class Average</th>
+                {% for header in table_headings %}
+                <th> {{ header }}</th>
+                {% endfor %}
             </tr>
         </thead>
             <tbody>
                 <!-- Your rows inside the table HERE: -->
                     <tr>
-                        <td>1</td>
-                        <td>test.email.com</td>
-                        <td>Wei</td>
-                        <td>3.0</td>
+                        {% for i in data %}
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.first_name }}</td>
+                        <td>{{ i.email }}</td>
                         <td>
-                            <button class="btn btn-outline btn-warning">Warn</button>
+                            <button class="btn btn-outline btn-danger" name = "warn_button" value = "{{ i.id }}">Warn</button>
                         </td>
                     </tr>
+                    {% endfor %}
             </tbody>
         </table>
     <br>

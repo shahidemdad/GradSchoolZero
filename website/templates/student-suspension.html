@@ -15,12 +15,15 @@
             <tbody>
                 <!-- Your rows inside the table HERE: -->
                     <tr>
-                        <td>1</td>
-                        <td>Steven Granaturov</td>
+                        {% for i in data %}
+                        <td>{{ i.id }}</td>
+                        <td>{{ i.first_name }}</td>
                         <td>
-                            <button class="btn btn-outline btn-danger">Suspend</button>
+                            <button class="btn btn-outline btn-danger" name = "submit_button" value = "{{ i.id }}">Suspend</button>
+                            <button class="btn btn-outline btn-danger" name = "submit_button2" value = "{{ i.id }}">Back</button>
                         </td>
                     </tr>
+                    {% endfor %}
             </tbody>
         </table>
     <br>

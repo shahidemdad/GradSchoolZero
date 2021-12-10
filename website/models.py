@@ -11,6 +11,7 @@ class User(db.Model, UserMixin):
     usertype = db.Column(db.String(400))
     gpa = db.Column(db.Integer)
     department = db.Column(db.String(400))
+    status = db.Column(db.String(1))  ####################
     courses = db.relationship('Courses')
 
     def getFName(self):
@@ -26,10 +27,12 @@ class Courses(db.Model):
     name = db.Column(db.String(400))
     course_id = db.Column(db.String(400))
     instructor = db.Column(db.String(400))
+    instructor_id = db.Column(db.Integer)
     semester = db.Column(db.String(400))
     capacity = db.Column(db.Integer)
     user = db.Column(db.Integer, db.ForeignKey('user.id'))
-
+    def getID(self):
+        return id
 
 # added Applications, will have a relationship with User and
 #   students enter their name, and GPA -> Float 
@@ -73,4 +76,5 @@ class UserCourse(db.Model):
     name = db.Column(db.String(400))
     course_id = db.Column(db.String(400))
     instructor = db.Column(db.String(400))
+    grade = db.Column(db.String(10))
     semester = db.Column(db.String(400))

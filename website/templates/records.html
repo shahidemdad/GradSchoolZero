@@ -1,28 +1,28 @@
-{% extends "base.html" %} {% block title %}Student Records{% endblock %} {% block content
+{% extends "base.html" %} {% block title %}Records{% endblock %} {% block content
     %}
-    <h3 align="center">Student Records</h3>
+    <h3 align="center">Records</h3>
     <br>
 
     <form method="POST">
     <table class="table table-hover table-dark">
         <thead>
             <tr>
-                <!-- Your Columns HERE -->
-                <th scope="col">Course ID</th>
-                <th scope="col">Name</th>
-                <th scope="col">Semester</th>
-                <th scope="col">Grade</th>
+                {% for header in table_headings %}
+                <th> {{ header }}</th>
+                {% endfor %}
             </tr>
         </thead>
             <tbody>
-                <!-- Your rows inside the table HERE: -->
-                    <tr>
-                        <td>CSC59866</td>
-                        <td>Senior Design</td>
-                        <td>Fall 2020</td>
-                        <td>A+</td>
-                    </tr>
-            </tbody>
+            <tr>
+                {% for courses in data %}
+                <td>{{courses.course_id }}</td>
+                <td>{{courses.name }}</td>
+                <td>{{courses.instructor }}</td>
+                <td>{{courses.semester}}</td>
+                <td>{{courses.grade}}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
         </table>
     <br>
 </form>

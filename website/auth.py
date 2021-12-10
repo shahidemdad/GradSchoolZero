@@ -18,15 +18,26 @@ def login():
 
         user = User.query.filter_by(email=email).first()
         if user:
+##############################
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
-                login_user(user, remember=True)
                 if user.usertype == "Student":
-                    return redirect(url_for("auth.student_management"))
+                    if user.status == "S":
+                        flash("You have been suspended, wait till period ends. Any questions call Registrar.", category="error")
+                        return render_template("login.html", user = current_user)
+                    else:
+                        login_user(user, remember=True)
+                        return redirect(url_for("auth.student_management"))
                 elif user.usertype == "Instructor":
-                    return redirect(url_for("auth.instructor_management"))
+                    if user.status == "S":
+                        flash("You have been suspended, wait till period ends. Any questions call Registrar.", category="error")
+                    else:
+                        login_user(user, remember=True)
+                        return redirect(url_for("auth.instructor_management"))
                 elif user.usertype == "Registrar":
+                    login_user(user, remember=True)
                     return redirect(url_for("auth.registrar_management"))
+
+##############################
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
@@ -131,11 +142,11 @@ def sign_up():
         #     flash('Password must be at least 7 characters.', category='error')
         if usertype == 'Student':
             new_user = User(email=email, first_name=first_name,
-                            password=generate_password_hash(password1, method='sha256'), usertype=usertype, gpa=gpa)
+                            password=generate_password_hash(password1, method='sha256'), usertype=usertype, gpa=gpa, status = "A") #<<<<<<<<<<<<<<<<<<<<<<<<<<
         elif usertype == 'Instructor':
             new_user = User(email=email, first_name=first_name,
                             password=generate_password_hash(password1, method='sha256'), usertype=usertype,
-                            department=department)
+                            department=department, status = "A") #<<<<<<<<<<<<<<<<<<<<<<<<<<
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user, remember=True)
@@ -168,27 +179,27 @@ def make_student():
     if user:
         pass
     else:
-        new_user = User(email = "s@gmail.com", first_name = "Student", password = generate_password_hash("1", method='sha256'), usertype = "Student")
+        new_user = User(email = "s@gmail.com", first_name = "Student", password = generate_password_hash("1", method='sha256'), usertype = "Student", status = "A'")
         db.session.add(new_user)
         db.session.commit()
 
         new_user2 = User(email="c@gmail.com", first_name="Carlos Flores",
-                        password=generate_password_hash("1", method='sha256'), usertype="Student", gpa = '3.85')
+                        password=generate_password_hash("1", method='sha256'), usertype="Student", gpa = '3.85', status = "A'")
         db.session.add(new_user2)
         db.session.commit()
 
         new_user3 = User(email="sg@gmail.com", first_name="Steven Granaturov",
-                        password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.80')
+                        password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.80', status = "A'")
         db.session.add(new_user3)
         db.session.commit()
 
         new_user4 = User(email="w@gmail.com", first_name="Willie Shi",
-                        password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.90')
+                        password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.90', status = "A'")
         db.session.add(new_user4)
         db.session.commit()
 
         new_user5 = User(email="a@gmail.com", first_name="Atiya Mirza",
-                        password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.75')
+                        password=generate_password_hash("1", method='sha256'), usertype="Student", gpa='3.75', status = "A'")
         db.session.add(new_user5)
         db.session.commit()
 
@@ -226,54 +237,25 @@ def make_courses():
     if course:
         pass
     else:
-        new_user = Courses(course_id = "CSC 10300", name = "Introduction to Computing", instructor = "William E. Skeith", capacity= 90, semester="Fall 2021")
+        new_user = Courses(course_id = "CSC 10300", name = "Introduction to Computing", instructor = "William E. Skeith", instructor_id = 0, capacity= 90, semester="Fall 2021")
         db.session.add(new_user)
         db.session.commit()
 
-        new_user = Courses(course_id="CSC 10300", name="Introduction to Computing", instructor = "Akira Kawaguchi", capacity= 30, semester="Fall 2021")
+        new_user = Courses(course_id="CSC 10400", name="Discrete Mathematical Structures", instructor="Tahereh Jafarikhah", instructor_id = 0, capacity= 30, semester="Fall 2021")
         db.session.add(new_user)
         db.session.commit()
 
-        new_user = Courses(course_id="CSC 10400", name="Discrete Mathematical Structures", instructor="Tahereh Jafarikhah", capacity= 30, semester="Fall 2021")
-        db.session.add(new_user)
-        db.session.commit()
-
-        new_user = Courses(course_id="CSC 10400", name="Discrete Mathematical Structures", instructor="Arthur P. Pedersen", capacity=30, semester="Fall 2021")
-        db.session.add(new_user)
-        db.session.commit()
-
-        new_user = Courses(course_id="CSC 11300", name="Programming Language", instructor="Ahmet Yuksel", capacity=30, semester="Fall 2021")
-        db.session.add(new_user)
-        db.session.commit()
-
-        new_user = Courses(course_id="CSC 11300", name="Programming Language", instructor="Ahmet Yuksel", capacity=30, semester="Fall 2021")
-        db.session.add(new_user)
-        db.session.commit()
-
-        new_user = Courses(course_id="CSC 21000", name="Computers and Assembly Programming", instructor="Michael Vulis", capacity=30, semester="Fall 2021")
-        db.session.add(new_user)
-        db.session.commit()
-
-        new_user = Courses(course_id="CSC 21100", name="Fundamentals of Computer Systems", instructor="Zheng Peng", capacity=30, semester="Fall 2021")
-        db.session.add(new_user)
-        db.session.commit()
-
-        new_user = Courses(course_id="CSC 21200", name="Data Structures", instructor="George Wolberg", capacity=30, semester="Fall 2021")
-        db.session.add(new_user)
-        db.session.commit()
-
-        new_user = Courses(course_id="CSC 21700", name="Probability & Statistics for Computer Science", instructor="Irina Gladkova", capacity=30, semester="Fall 2021")
-        db.session.add(new_user)
-        db.session.commit()
 
     if request.method == "POST":
         name = request.form.get('name')
         course_id = request.form.get('course_id')
         instructor = request.form.get('instructor')
+        user_instructor = User.query.filter_by(first_name = instructor).first()
+        user_id = user_instructor.get_id()
         semester = request.form.get('semester')
         capacity = request.form.get('capacity')
-        new_course = Courses(course_id=course_id, name=name, instructor=instructor, semester=semester,
-                             capacity=capacity)
+        new_course = Courses(course_id=course_id, name=name, instructor=instructor, instructor_id = user_id, semester=semester,
+                            capacity=capacity)
         db.session.add(new_course)
         db.session.commit()
         return render_template("courses-make.html", user=current_user)
@@ -298,7 +280,7 @@ def search_classes():
         courseName = course.name
         courseInstructor = course.instructor
         courseSemester = course.semester
-        new_usercourse = UserCourse(name=courseName, course_id=courseID, instructor=courseInstructor, semester=courseSemester)
+        new_usercourse = UserCourse(name=courseName, course_id=courseID, instructor=courseInstructor, semester=courseSemester, grade = "")
         db.session.add(new_usercourse)
         db.session.commit()
         return redirect(url_for('auth.search_classes', user=current_user, table_headings=headings, data=coursesData))
@@ -491,7 +473,9 @@ def records():
     if request.method == 'POST':
         pass
     else:
-        return render_template("records.html", user=current_user) 
+        userCourses = UserCourse.query.order_by(UserCourse.course_id).all()
+        headings = ("Course ID", "Course Name", "Instructor", "Semester", "Grade")
+        return render_template("records.html", user=current_user, table_headings=headings, data=userCourses)
 
 
 @auth.route('/instructor-management', methods=['GET', 'POST'])
@@ -515,18 +499,45 @@ def instructor_management():
 
 @auth.route('/grade-students', methods=['GET', 'POST'])
 def grade_students():
-    if request.method == 'POST':
-        pass
+    headings = ("Student ID", "Student Name", "Course Name", "Grade")
+    user_id  =current_user.get_id()
+    course = Courses.query.filter_by(instructor=current_user.getFName()).first()
+    list_users = UserCourse.query.filter_by(course_id=course.id).all() # Returns UserCourse Object List
+    listOfStudents = []
+    listOfStudentID = []
+    for student in list_users:
+        # Get pkeys
+        studentID = student.id
+        listOfStudentID.append(studentID)
+        nameOfUser = User.query.filter_by(id=studentID).first()
+        studentName = nameOfUser.first_name
+        listOfStudents.append(studentName)
+    nameList = []
+    gradeList = []
+    for data in list_users:
+        courseName = data.name
+        courseGrade = data.grade
+        nameList.append(courseName)
+        gradeList.append(courseGrade)
+    if request.method == "POST":
+        id = request.form.get("grade_button")
+        temp = UserCourse.query.get(id)
+        temp.grade = request.form.get("grade")
+        db.session.commit()
+        return render_template("grade-students.html", user=current_user, table_headings=headings, data=listOfStudents, data2=nameList, data3=gradeList, length = len(listOfStudents), data4=listOfStudentID)
     else:
-        return render_template("grade-students.html", user=current_user)
+        return render_template("grade-students.html", user=current_user, table_headings=headings,data=listOfStudents, data2=nameList, data3=gradeList, length = len(listOfStudents), data4=listOfStudentID)
+    return render_template("grade-students.html", user=current_user, table_headings=headings, data=listOfStudents, data2=nameList, data3=gradeList, length = len(listOfStudents), data4=listOfStudentID)
 
 
 @auth.route('/my-courses', methods=['GET', 'POST'])
 def my_courses():
+    headings = ("Course ID", "Course Name", "Semester", "Capacity")
+    coursesdata = Courses.query.filter_by(instructor=current_user.getFName()).all()
     if request.method == 'POST':
-        pass
+        return render_template("my-courses.html", user=current_user, table_headings=headings, data=coursesdata)
     else:
-        return render_template("my-courses.html", user=current_user)
+        return render_template("my-courses.html", user=current_user, table_headings=headings, data=coursesdata)
 
 
 @auth.route('/student-records', methods=['GET', 'POST'])
@@ -534,7 +545,9 @@ def student_records():
     if request.method == 'POST':
         pass
     else:
-        return render_template("student-records.html", user=current_user)
+        userCourses = UserCourse.query.order_by(UserCourse.course_id).all()
+        headings = ("Course ID", "Course Name", "Instructor", "Semester", "Grade")
+        return render_template("student-records.html", user=current_user, table_headings=headings, data=userCourses)
     
 # instructor complaints about student to registrar  
 @auth.route('/instructor-student-complaint', methods=['GET', 'POST'])
@@ -578,29 +591,69 @@ def registrar_management():
     else:
         return render_template("registrar-management.html", user=current_user)
 
-
 @auth.route('/evaluate-instructor', methods=['GET', 'POST'])
 def evaluate_instructor():
+    headings = ("ID", "Instructor Name", "Email")
+    user = User.query.filter_by(usertype="Instructor").order_by(User.first_name).all()
     if request.method == 'POST':
-        pass
+        if request.form.get("warn_button"):
+            id = request.form.get("warn_button")
+            #suspend = User.query.get(id)
+            #suspend.status = "S"
+            #db.session.commit()
+            flash("Warned", category="error")
+            user = User.query.filter_by(usertype="Instructor").order_by(User.first_name).all()
+            return render_template("evaluate-instructor.html", data=user, user=current_user, table_headings=headings)
     else:
-        return render_template("evaluate-instructor.html", user=current_user)
+        return render_template("evaluate-instructor.html", data=user, user=current_user, table_headings=headings)
 
 
 @auth.route('/student-suspension', methods=['GET', 'POST'])
 def student_suspension():
+    user = User.query.filter_by(usertype="Student").order_by(User.first_name).all()
     if request.method == 'POST':
-        pass
+        if request.form.get("submit_button"):
+            id = request.form.get("submit_button")
+            suspend = User.query.get(id)
+            suspend.status = "S"
+            db.session.commit()
+            flash("Suspended", category="error")
+            user = User.query.filter_by(usertype="Student").order_by(User.first_name).all()
+            return render_template("student-suspension.html", data = user, user=current_user)
+        elif request.form.get("submit_button2"):
+            id = request.form.get("submit_button2")
+            remove = User.query.get(id)
+            remove.status = "A"
+            db.session.commit()
+            flash("Ready", category="success")
+            user = User.query.filter_by(usertype="Student").order_by(User.first_name).all()
+            return render_template("student-suspension.html", data = user, user=current_user)
     else:
-        return render_template("student-suspension.html", user=current_user)
+        return render_template("student-suspension.html", data = user, user=current_user)
 
 
 @auth.route('/instructor-suspension', methods=['GET', 'POST'])
 def instructor_suspension():
+    user = User.query.filter_by(usertype="Instructor").order_by(User.first_name).all()
     if request.method == 'POST':
-        pass
+        if request.form.get("submit_button"):
+            id = request.form.get("submit_button")
+            suspend = User.query.get(id)
+            suspend.status = "S"
+            db.session.commit()
+            flash("Suspended", category="error")
+            user = User.query.filter_by(usertype="Instructor").order_by(User.first_name).all()
+            return render_template("instructor-suspension.html", data = user, user=current_user)
+        elif request.form.get("submit_button2"):
+            id = request.form.get("submit_button2")
+            remove = User.query.get(id)
+            remove.status = "A"
+            db.session.commit()
+            flash("Ready", category="success")
+            user = User.query.filter_by(usertype="Instructor").order_by(User.first_name).all()
+            return render_template("instructor-suspension.html", data = user, user=current_user)
     else:
-        return render_template("instructor-suspension.html", user=current_user)
+        return render_template("instructor-suspension.html", data = user, user=current_user)
 
 
 @auth.route('/student-termination', methods=['GET', 'POST'])
